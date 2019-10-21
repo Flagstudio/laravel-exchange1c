@@ -39,7 +39,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Flagstudio\\LaravelExchange1C\\Exchange1CServiceProvider"
+        "Bigperson\\LaravelExchange1C\\Exchange1CServiceProvider"
       ]
     }
   },
