@@ -31,20 +31,26 @@ class ImportController extends Controller
         $type = $request->get('type');
 
         try {
-            if ($type == 'catalog') {
-                if (!method_exists($service, $mode)) {
-                    throw new Exchange1CException('not correct request, class ExchangeCML not found');
-                }
+            switch ($type) {
+                case 'catalog':
+                    if (!method_exists($service, $mode)) {
+                        throw new Exchange1CException("Exchange mode={$mode}. Not foreseen by exchange protocol.");
+                    }
+                    $response = $service->$mode();
+                    \Log::debug('exchange_1c: $response=' . "\n" . $response);
 
-                $response = $service->$mode();
-                \Log::debug('exchange_1c: $response='."\n".$response);
+                    return response($response, 200, ['Content-Type', 'text/plain']);
 
-                return response($response, 200, ['Content-Type', 'text/plain']);
-            } else {
-                throw new \LogicException(sprintf('Logic for method %s not released', $type));
+                case 'sale':
+                    throw new \LogicException(sprintf('Logic for method %s not released', $type));
+
+                default:
+                    throw new Exchange1CException("Exchange type={$type}. Not foreseen by exchange protocol.");
+
             }
-        } catch (Exchange1CException $e) {
-            \Log::error("exchange_1c: failure \n".$e->getMessage()."\n".$e->getFile()."\n".$e->getLine()."\n");
+        }
+        catch (Exchange1CException $e) {
+            \Log::error("Exchange 1C: FAIL\n".$e->getMessage()."\n".$e->getFile()."\n".$e->getLine()."\n");
 
             $response = "failure\n";
             $response .= $e->getMessage()."\n";

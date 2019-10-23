@@ -10,5 +10,5 @@ declare(strict_types=1);
 $path = config('exchange1c.exchange_path', '1c_exchange');
 
 Route::group(['middleware' => [\Illuminate\Session\Middleware\StartSession::class]], function () use ($path) {
-    Route::match(['get', 'post'], $path, Bigperson\LaravelExchange1C\Controller\ImportController::class.'@request');
+    Route::match(['get', 'post'], $path, Bigperson\LaravelExchange1C\Controller\ImportController::class.'@request')->name('exchange1c');
 });
