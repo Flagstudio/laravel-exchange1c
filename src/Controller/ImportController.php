@@ -11,6 +11,7 @@ namespace Bigperson\LaravelExchange1C\Controller;
 
 use Bigperson\Exchange1C\Exceptions\Exchange1CException;
 use Bigperson\Exchange1C\Services\CatalogService;
+use Bigperson\LaravelExchange1C\OrderExchangeService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -25,7 +26,7 @@ class ImportController extends Controller
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function request(Request $request, CatalogService $service)
+    public function request(Request $request, CatalogService $service, OrderExchangeService $orderExchangeService)
     {
         $mode = $request->get('mode');
         $type = $request->get('type');
@@ -34,7 +35,7 @@ class ImportController extends Controller
             switch ($type) {
                 case 'catalog':
                     if (!method_exists($service, $mode)) {
-                        throw new Exchange1CException("Exchange mode={$mode}. Not foreseen by exchange protocol.");
+                        throw new Exchange1CException("Exchange catalog mode={$mode} not foreseen by exchange protocol.");
                     }
                     $response = $service->$mode();
                     \Log::debug("exchange_1c: response=" . "\n" . $response);
@@ -42,10 +43,33 @@ class ImportController extends Controller
                     return response($response, 200, ['Content-Type', 'text/plain']);
 
                 case 'sale':
-                    throw new \LogicException("Logic for exchange type={$type} not realized");
+                    if (!method_exists($orderExchangeService, $mode)) {
+                        throw new Exchange1CException("Exchange orders mode={$mode} not foreseen by exchange protocol.");
+                    }
+
+                    if ($mode == 'success') {
+                        if ($orderExchangeService->$mode()) {
+                            \Log::error("exchange_1c: orders NOT marked as sent. ERROR");
+                        }
+                        else {
+                            \Log::debug("exchange_1c: orders marked as sent");
+                        }
+                        break;
+                    }
+
+                    if ($mode == 'query') {
+                        $fileResponse = $orderExchangeService->$mode();
+                        \Log::debug("exchange_1c: file with orders sent");
+                        return $fileResponse;
+                    }
+
+                    $response = $orderExchangeService->$mode();
+                    \Log::debug("exchange_1c: response=" . "\n" . $response);
+
+                    return response($response, 200, ['Content-Type', 'text/plain']);
 
                 default:
-                    throw new Exchange1CException("Exchange type={$type}. Not foreseen by exchange protocol.");
+                    throw new Exchange1CException("Exchange type={$type} not foreseen by exchange protocol.");
 
             }
         }

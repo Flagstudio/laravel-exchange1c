@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Flagstudio/exchange1c.git",
-                "reference": "086b1ce3dc58294c521e3cce62863cf1df10ce80"
+                "reference": "24a476384340fa02283e5241e5f759c59eb0b0d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Flagstudio/exchange1c/zipball/086b1ce3dc58294c521e3cce62863cf1df10ce80",
-                "reference": "086b1ce3dc58294c521e3cce62863cf1df10ce80",
+                "url": "https://api.github.com/repos/Flagstudio/exchange1c/zipball/24a476384340fa02283e5241e5f759c59eb0b0d9",
+                "reference": "24a476384340fa02283e5241e5f759c59eb0b0d9",
                 "shasum": ""
             },
             "require": {
@@ -61,7 +61,7 @@
             "support": {
                 "source": "https://github.com/Flagstudio/exchange1c/tree/dev-fix"
             },
-            "time": "2019-10-23T06:57:28+00:00"
+            "time": "2019-10-23T12:21:10+00:00"
         },
         {
             "name": "carono/commerceml",
