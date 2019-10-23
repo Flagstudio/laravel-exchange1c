@@ -37,12 +37,12 @@ class ImportController extends Controller
                         throw new Exchange1CException("Exchange mode={$mode}. Not foreseen by exchange protocol.");
                     }
                     $response = $service->$mode();
-                    \Log::debug('exchange_1c: $response=' . "\n" . $response);
+                    \Log::debug("exchange_1c: response=" . "\n" . $response);
 
                     return response($response, 200, ['Content-Type', 'text/plain']);
 
                 case 'sale':
-                    throw new \LogicException(sprintf('Logic for method %s not released', $type));
+                    throw new \LogicException("Logic for exchange type={$type} not realized");
 
                 default:
                     throw new Exchange1CException("Exchange type={$type}. Not foreseen by exchange protocol.");
