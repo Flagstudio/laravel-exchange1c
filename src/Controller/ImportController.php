@@ -11,7 +11,7 @@ namespace Bigperson\LaravelExchange1C\Controller;
 
 use Bigperson\Exchange1C\Exceptions\Exchange1CException;
 use Bigperson\Exchange1C\Services\CatalogService;
-use Bigperson\LaravelExchange1C\OrderExchangeService;
+use Bigperson\Exchange1C\Services\OrderExchangeService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -58,9 +58,9 @@ class ImportController extends Controller
                     }
 
                     if ($mode == 'query') {
-                        $fileResponse = $orderExchangeService->$mode();
+                        $ordersFile = $orderExchangeService->$mode();
                         \Log::debug("exchange_1c: file with orders sent");
-                        return $fileResponse;
+                        return response()->file($ordersFile);
                     }
 
                     $response = $orderExchangeService->$mode();
