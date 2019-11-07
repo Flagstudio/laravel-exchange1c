@@ -47,7 +47,7 @@ class ImportController extends Controller
                         throw new Exchange1CException("Exchange orders mode={$mode} not foreseen by exchange protocol.");
                     }
 
-                    if ($mode == 'success') {
+                    /*if ($mode == 'success') {
                         if ($orderExchangeService->$mode()) {
                             \Log::error("exchange_1c: orders NOT marked as sent. ERROR");
                         }
@@ -55,7 +55,7 @@ class ImportController extends Controller
                             \Log::debug("exchange_1c: orders marked as sent");
                         }
                         break;
-                    }
+                    }*/
 
                     if ($mode == 'query') {
                         $ordersFile = $orderExchangeService->$mode();
